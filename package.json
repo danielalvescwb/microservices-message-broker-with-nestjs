@@ -1,0 +1,8 @@
+{
+  "private": true,
+  "workspaces": [
+    "example-api-monolithic",
+    "microservice-api-admin",
+    "microservice-api-gateway"
+  ]
+}
