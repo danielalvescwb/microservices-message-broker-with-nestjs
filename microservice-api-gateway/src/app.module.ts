@@ -9,7 +9,7 @@ import { CategoriesController } from './categories/categories.controller';
         name: 'ADMIN-CLIENT',
         transport: Transport.RMQ,
         options: {
-          urls: ['amqp://guest:guest@localhost:5672/smartranking'],
+          urls: ['amqp://guest:guest@localhost:5672/virtual-host-api-tennis'],
           queue: 'admin-backend',
           queueOptions: {
             durable: false,

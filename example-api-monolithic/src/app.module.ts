@@ -7,7 +7,7 @@ import { ChallengeModule } from './challenges/challenge.module';
 @Module({
   imports: [
     MongooseModule.forRoot(
-      'mongodb://usertypegraphql:c52874e4219e341fc767d97d2effa377@localhost:27017/typegraphql',
+      'mongodb://api_user:api1234@localhost:27017/api-monolithic',
       {
         useNewUrlParser: true,
         useCreateIndex: true,
