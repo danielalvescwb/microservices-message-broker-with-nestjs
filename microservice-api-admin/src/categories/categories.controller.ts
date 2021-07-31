@@ -1,5 +1,5 @@
 import { Controller, Logger } from '@nestjs/common';
-import { EventPattern, Payload } from '@nestjs/microservices';
+import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDTO } from './dtos/createCategory.dto';
 
@@ -14,7 +14,12 @@ export class CategoriesController {
     await this.categoriesService.createCategory(category);
   }
 
-  async getAllCategories(@Payload() _id: string) {
-    if(_id)
+  @MessagePattern('get-categories')
+  async getCategories(@Payload() _id: string) {
+    if (_id) {
+      return await this.categoriesService.getCategoryById(_id);
+    } else {
+      return await this.categoriesService.getAllCategories();
+    }
   }
 }

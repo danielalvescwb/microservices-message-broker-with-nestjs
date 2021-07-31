@@ -31,22 +31,44 @@ export class CategoriesService {
       const createCategory = new this.categoryModel(createCategoryDTO);
       return await createCategory.save();
     } catch (error) {
-      this.logger.log(`error: ${JSON.stringify(error.message)}`);
+      this.logger.log(`error createCategory: ${JSON.stringify(error.message)}`);
       throw new RpcException(error.message);
     }
   }
 
   async getAllCategories(): Promise<Category[]> {
     try {
+      this.logger.log(`error getAllCategories: ok`);
       return await this.categoryModel
         .find()
         .populate({
           path: 'players',
-          options: { limit: 2 },
+          options: { limit: 5 },
           select: 'name email',
         })
         .exec();
     } catch (error) {
+      this.logger.log(
+        `error getAllCategories: ${JSON.stringify(error.message)}`,
+      );
+      throw new RpcException(error.message);
+    }
+  }
+
+  async getCategoryById(_id: string): Promise<Category> {
+    try {
+      this.logger.log(`error getCategoryById: ${_id}`);
+      return await this.categoryModel
+        .findOne({ _id })
+        .populate({
+          path: 'players',
+          select: 'name email',
+        })
+        .exec();
+    } catch (error) {
+      this.logger.log(
+        `error getCategoryById: ${JSON.stringify(error.message)}`,
+      );
       throw new RpcException(error.message);
     }
   }

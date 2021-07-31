@@ -4,7 +4,6 @@ services:
     mongo:
         container_name: mongo-microservices
         image: mongo:latest
-        restart: always
         ports: 
             - 27017:27017        
         volumes: 
@@ -12,7 +11,6 @@ services:
     
     rabbitmq:
       image: rabbitmq:3-management
-      restart: always
       container_name: 'rabbitmq-microservices'
       ports:
           - 5672:5672
