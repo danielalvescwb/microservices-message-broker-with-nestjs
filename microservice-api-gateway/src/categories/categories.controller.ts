@@ -23,9 +23,7 @@ export class CategoriesController {
   }
 
   @Get()
-  async getCategoryById(
-    @Query('idCategory') _id: string,
-  ): Promise<Observable<any>> {
-    return this.client.send('get-category-by-id', _id ? _id : '');
+  getCategoryById(@Query('idCategory') _id: string): Observable<any> {
+    return this.client.send('get-categories', _id ? _id : '');
   }
 }
