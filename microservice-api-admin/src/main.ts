@@ -10,6 +10,7 @@ async function bootstrap() {
       options: {
         urls: ['amqp://guest:guest@localhost:5672/virtual-host-api-tennis'],
         queue: 'admin-backend',
+        noAck: false,
         queueOptions: {
           durable: false,
         },

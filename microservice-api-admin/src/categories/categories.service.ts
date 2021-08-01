@@ -1,9 +1,10 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { PlayersService } from 'src/players/players.service';
 import { CreateCategoryDTO } from './dtos/createCategory.dto';
+import { UpdateCategoryDTO } from './dtos/updateCategory.dto';
 import { Category } from './schemas/category.schema';
 
 @Injectable()
@@ -31,7 +32,9 @@ export class CategoriesService {
       const createCategory = new this.categoryModel(createCategoryDTO);
       return await createCategory.save();
     } catch (error) {
-      this.logger.log(`error createCategory: ${JSON.stringify(error.message)}`);
+      this.logger.error(
+        `error createCategory: ${JSON.stringify(error.message)}`,
+      );
       throw new RpcException(error.message);
     }
   }
@@ -48,7 +51,7 @@ export class CategoriesService {
         })
         .exec();
     } catch (error) {
-      this.logger.log(
+      this.logger.error(
         `error getAllCategories: ${JSON.stringify(error.message)}`,
       );
       throw new RpcException(error.message);
@@ -66,8 +69,27 @@ export class CategoriesService {
         })
         .exec();
     } catch (error) {
-      this.logger.log(
+      this.logger.error(
         `error getCategoryById: ${JSON.stringify(error.message)}`,
+      );
+      throw new RpcException(error.message);
+    }
+  }
+
+  async updateCategory(
+    _id: string,
+    updateCategoryDTO: UpdateCategoryDTO,
+  ): Promise<void> {
+    try {
+      const categoryExists = await this.categoryModel.findOne({ _id }).exec();
+      if (!categoryExists)
+        throw new RpcException(`Category ${_id} is not exists`);
+      await this.categoryModel
+        .findOneAndUpdate({ _id }, { $set: updateCategoryDTO })
+        .exec();
+    } catch (error) {
+      this.logger.error(
+        `error updateCategory: ${JSON.stringify(error.message)}`,
       );
       throw new RpcException(error.message);
     }
