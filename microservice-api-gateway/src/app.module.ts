@@ -1,24 +1,12 @@
 import { Module } from '@nestjs/common';
-import { ClientsModule, Transport } from '@nestjs/microservices';
-import { CategoriesController } from './categories/categories.controller';
+import { CategoriesModule } from './categories/categories.module';
+import { ChallengeModule } from './challenges/challenge.module';
+import { PlayersModule } from './players/players.module';
+import { ClientProxyRMQProvider } from './shared/proxyrmq/clientProxyRMQProvider';
 
 @Module({
-  imports: [
-    ClientsModule.register([
-      {
-        name: 'ADMIN-CLIENT',
-        transport: Transport.RMQ,
-        options: {
-          urls: ['amqp://guest:guest@localhost:5672/virtual-host-api-tennis'],
-          queue: 'admin-backend',
-          queueOptions: {
-            durable: false,
-          },
-        },
-      },
-    ]),
-  ],
-  controllers: [CategoriesController],
-  providers: [],
+  imports: [CategoriesModule, ChallengeModule, PlayersModule],
+  controllers: [],
+  providers: [ClientProxyRMQProvider],
 })
 export class AppModule {}

@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   Get,
-  Inject,
   Param,
   Post,
   Put,
@@ -10,14 +9,16 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
+import { ClientProxyRMQProvider } from 'src/shared/proxyrmq/clientProxyRMQProvider';
 import { CreateCategoryDTO } from './dtos/createCategory.dto';
 import { UpdateCategoryDTO } from './dtos/updateCategory.dto';
 
 @Controller('api/v1/category')
 export class CategoriesController {
-  constructor(@Inject('ADMIN-CLIENT') private client: ClientProxy) {}
+  constructor(private clientProxyRMQ: ClientProxyRMQProvider) {}
+
+  private client = this.clientProxyRMQ.getClientProxyInstance();
 
   @Post()
   @UsePipes(ValidationPipe)
